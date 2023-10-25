@@ -5,7 +5,7 @@ import requests
 from django.shortcuts import redirect
 from rest_framework.authentication import SessionAuthentication
 from django.contrib.auth import login, logout, authenticate
-from Docs.models.users import Users
+from Docs.models.user import User
 
 DB_NAME = os.getenv("DATABASE_NAME")
 DB_USER =os.getenv("DATABASE_USER")
@@ -77,23 +77,23 @@ class CallbackAPI(APIView):
         date_of_joining = data['student']['startDate']
         phone_no = data['contactInformation']['primaryPhoneNumber']
 
-        users = Users.objects.all()
+        users = User.objects.all()
         print(users)
-        # Users.objects.all().delete()
+        # User.objects.all().delete()
         # print(users)
 
 
-        if  Users.objects.filter(enrollment_no=enrollment_no).exists():
+        if  User.objects.filter(enrollment_no=enrollment_no).exists():
             # means that user already exists
             print("User already exists, so logging in the user")
-            user = Users.objects.filter(enrollment_no=enrollment_no)
+            user = User.objects.filter(enrollment_no=enrollment_no)
             try:
                 login(request, user)
             except:
                 return Response("unable to log in successfully")
         else:
             print("User does not exist hence now adding user")
-            user = Users.objects.create(username= username, email=email, date_of_joining=date_of_joining, phone_no=phone_no, enrollment_no=enrollment_no, tag=enrollment_no)
+            user = User.objects.create(username= username, email=email, date_of_joining=date_of_joining, phone_no=phone_no, enrollment_no=enrollment_no, tag=enrollment_no)
             print(user)
             print("User created and logged in successfully")
             try:
@@ -103,7 +103,7 @@ class CallbackAPI(APIView):
            
 
         
-        users = Users.objects.all()
+        users = User.objects.all()
         print(users)
         # print(r.url)
         # return redirect("http://localhost:3000/home")
@@ -120,6 +120,6 @@ class LogoutUser(APIView):
 
 class ClearDB(APIView):
     def get(self, request):
-        Users.objects.all().delete()
-        print(Users.objects.all())
+        User.objects.all().delete()
+        print(User.objects.all())
         return Response("kardia db clear")

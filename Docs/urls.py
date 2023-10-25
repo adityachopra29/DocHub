@@ -1,5 +1,5 @@
 from django.urls import path
-from Docs.views.oauth.login import *
+from Docs.views.login import *
 from Docs.views.testing import *
 
 

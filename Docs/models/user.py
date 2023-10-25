@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 
 
-class Users(AbstractUser):
+class User(AbstractUser):
     username = models.CharField(
         max_length=50, blank=True, null=True, unique=True)
     enrollment_no = models.BigIntegerField(null=False, default=10)

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models.users import Users
+from .models.user import User
 from .models.teams import Team
 from .models.document import Document
 # from .models.notifications import Notification
@@ -8,7 +8,7 @@ from .models.access_permissions import UserAccess, TeamAccess
 # Register your models here.
 
 
-@admin.register(Users)
+@admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     list_display = ['id', 'username', 'email', 'date_of_joining', 'tag']
 

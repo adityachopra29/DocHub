@@ -1,12 +1,8 @@
 from rest_framework import serializers
-from Docs.models.users import Users
+from Docs.models.user import User
 
 
 class UserSerializer(serializers.ModelSerializer):
-    # name = serializers.CharField()
-    # email = serializers.EmailField()
-    # date_of_joining = serializers.DateField()
-    # tag = serializers.CharField(unique=True)
     class Meta:
-        model = Users
+        model = User
         fields = ['__all__']

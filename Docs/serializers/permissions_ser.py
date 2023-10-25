@@ -7,28 +7,12 @@ from Docs.models.access_permissions import *
 
 
 class UserPermissionsSerializer(serializers.ModelSerializer):
-    # document = serializers.ForeignKey(Document, on_delete=serializers.CASCADE)
-    # for_user = serializers.ForeignKey(User, on_delete=serializers.CASCADE)
-    # permission_level = serializers.IntegerField(
-    #     validators=[
-    #         MaxValueValidator(4),
-    #         MinValueValidator(1)
-    #     ]
-    # )
     class Meta:
         model = UserAccess
         fields = ['__all__']
 
 
 class TeamPermissionsSerializer(serializers.ModelSerializer):
-    # document = serializers.ForeignKey(Document, on_delete=serializers.CASCADE)
-    # for_team = serializers.ForeignKey(Team, on_delete=serializers.CASCADE)
-    # permission_level = serializers.IntegerField(
-    #     validators=[
-    #         MaxValueValidator(4),
-    #         MinValueValidator(1)
-    #     ]
-    # )
     class Meta:
         model = TeamAccess
         fields = ['__all__']

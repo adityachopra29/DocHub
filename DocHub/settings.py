@@ -96,7 +96,7 @@ REST_FRAMEWORK = {
 # AUTHENTICATION_BACKENDS = [
 
 #     'allauth.account.auth_backends.AuthenticationBackend',
- 
+
 # ]
 
 # settings.py
@@ -145,7 +145,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-AUTH_USER_MODEL = 'Docs.Users'
+AUTH_USER_MODEL = 'Docs.User'
 
 
 # Internationalization
