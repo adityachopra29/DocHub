@@ -7,3 +7,6 @@ class Document(models.Model):
     name = models.CharField(max_length=40)
     delta = models.JSONField()
     text = models.TextField()
+
+    def __str__(self) :
+        return f"Document name: {self.name}, owner:  {self.owner}"

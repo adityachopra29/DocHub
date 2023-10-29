@@ -190,3 +190,8 @@ CORS_ORIGIN_WHITELIST = [
 CORS_ALLOW_METHODS = [
     'PUT', 'GET', 'HEAD', 'POST', 'DELETE', 'OPTIONS', 'PATCH'
 ]
+
+# MEDIA_URL = '/media/'
+# # Path where media is stored
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+    

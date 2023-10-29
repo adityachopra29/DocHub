@@ -2,11 +2,8 @@ from django.contrib import admin
 from .models.user import User
 from .models.teams import Team
 from .models.document import Document
-# from .models.notifications import Notification
+from .models.notifications import Notification
 from .models.access_permissions import UserAccess, TeamAccess
-
-# Register your models here.
-
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
@@ -17,9 +14,9 @@ class UserAdmin(admin.ModelAdmin):
 class TeamAdmin(admin.ModelAdmin):
     list_display = ['id', 'name']
 
-# @admin.register(Notification)
-# class NotificationAdmin(admin.ModelAdmin):
-#     list_display = ['id', 'type', 'creation_time']
+@admin.register(Notification)
+class NotificationAdmin(admin.ModelAdmin):
+    list_display = ['id', 'type', 'creation_time']
 
 
 @admin.register(Document)

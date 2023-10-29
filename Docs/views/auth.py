@@ -86,18 +86,19 @@ class CallbackAPI(APIView):
         if  User.objects.filter(enrollment_no=enrollment_no).exists():
             # means that user already exists
             print("User already exists, so logging in the user")
-            user = User.objects.filter(enrollment_no=enrollment_no)
+            user = User.objects.get(enrollment_no=enrollment_no)
             try:
-                login(request, user)
+                login(request =request, user=user)
+                return Response("Successful login")
             except:
-                return Response("unable to log in successfully")
+                return Response("unable to login")
         else:
             print("User does not exist hence now adding user")
             user = User.objects.create(username= username, email=email, date_of_joining=date_of_joining, phone_no=phone_no, enrollment_no=enrollment_no, tag=enrollment_no)
             print(user)
-            print("User created and logged in successfully")
             try:
                 login(request, user)
+                print("User created and logged in successfully")
             except:
                 return Response("unable to log in")
            
