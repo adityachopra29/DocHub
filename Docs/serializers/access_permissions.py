@@ -9,10 +9,10 @@ from Docs.models.access_permissions import *
 class UserPermissionsSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAccess
-        fields = ['__all__']
+        fields = '__all__'
 
 
 class TeamPermissionsSerializer(serializers.ModelSerializer):
     class Meta:
         model = TeamAccess
-        fields = ['__all__']
+        fields = '__all__'

@@ -7,5 +7,5 @@ class CheckView(APIView):
         print("yo nigga")
 
         return Response("I think this is working", headers={
-            "Access-Control-Allow-Origin": "http://localhost:3000/"
+            "Access-Control-Allow-Origin": "http://localhost:5173/"
         }, )

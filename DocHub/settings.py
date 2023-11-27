@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-!vmjoh(&39*yk0*nr=xk63==3315#lo38dw%5@(_t-2dr5^c7d
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -46,10 +46,6 @@ INSTALLED_APPS = [
     'Docs',
     'rest_framework',
     'corsheaders',
-    # 'allauth',
-    # 'allauth.account',
-    # 'allauth.socialaccount',
-    # 'allauth.socialaccount.providers.oauth2',
 ]
 
 MIDDLEWARE = [
@@ -173,18 +169,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
 ]
 
-CORS_ALLOW_ORIGINS = [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    'http://127.0.0.1:5173',
 ]
 
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
 ]
 
 CORS_ALLOW_METHODS = [

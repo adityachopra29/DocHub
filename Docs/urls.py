@@ -3,7 +3,8 @@ from rest_framework import routers
 from Docs.views import *
 
 router = routers.SimpleRouter()
-# router.register(r'users', UserViewSet)
+router.register(r'users', UserViewSet, basename="users")
+router.register(r'document', DocumentViewSet, basename="document")
 
 
 urlpatterns = [
@@ -12,11 +13,6 @@ urlpatterns = [
     path("home/", CallbackAPI.as_view(), name='home'),
     path("testing/", CheckView.as_view(), name='test'),
     path("logout/", LogoutUser.as_view(), name='logout_user'),
-    path("clear/", ClearDB.as_view(), name='clear_db'),
-    path("users/", UserViewSet.as_view({
-        'get':'list'
-    })),
-    path("users/<int:pk>", UserViewSet.as_view({
-        'get':'retrieve'
-    }))
+    path("clear/", ClearUserDB.as_view(), name='clear_db'),
+    path("check_login/", CheckLogin.as_view(), name='check_login'),
 ]

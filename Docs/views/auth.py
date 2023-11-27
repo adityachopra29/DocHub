@@ -6,6 +6,7 @@ from django.shortcuts import redirect
 from rest_framework.authentication import SessionAuthentication
 from django.contrib.auth import login, logout, authenticate
 from Docs.models.user import User
+from Docs.serializers.user import UserSerializer
 
 DB_NAME = os.getenv("DATABASE_NAME")
 DB_USER =os.getenv("DATABASE_USER")
@@ -89,27 +90,28 @@ class CallbackAPI(APIView):
             user = User.objects.get(enrollment_no=enrollment_no)
             try:
                 login(request =request, user=user)
-                return Response("Successful login")
+                print("Successful login for ")
+                print(request.user)
+                return redirect("http://localhost:5173/home")
             except:
                 return Response("unable to login")
         else:
             print("User does not exist hence now adding user")
+
+            # this method of creating user can be effectively done using a serializer and then serializer.save() if using modelviewsets
             user = User.objects.create(username= username, email=email, date_of_joining=date_of_joining, phone_no=phone_no, enrollment_no=enrollment_no, tag=enrollment_no)
             print(user)
             try:
                 login(request, user)
-                print("User created and logged in successfully")
+                print("Successful login for ")
+                print(request.user)
+                users = User.objects.all()
+                print(users)
+                print(data)
+                return redirect("http://localhost:5173/home")
             except:
                 return Response("unable to log in")
-           
 
-        
-        users = User.objects.all()
-        print(users)
-        # print(r.url)
-        # return redirect("http://localhost:3000/home")
-
-        return Response(data)
 
 class LogoutUser(APIView):
     def get(self, request):
@@ -118,8 +120,18 @@ class LogoutUser(APIView):
         if request.user.is_authenticated:
             logout(request)
         return Response("Logout was successfull")
+    
+class CheckLogin(APIView):
+    def get(self, request):
+        content = {'isLoggedIn': False}
+        if request.user.is_authenticated:
+            print(request.user)
+            serializer = UserSerializer(request.user)
+            content = {'isLoggedIn': True, 'user': serializer.data}
+            
+        return Response(content)
 
-class ClearDB(APIView):
+class ClearUserDB(APIView):
     def get(self, request):
         User.objects.all().delete()
         print(User.objects.all())
