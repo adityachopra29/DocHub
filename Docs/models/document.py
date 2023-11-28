@@ -5,8 +5,8 @@ from .user import User
 class Document(models.Model):
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=40)
-    delta = models.JSONField(default={})
-    text = models.TextField()
+    delta = models.JSONField(default=dict)
+    text = models.TextField(default="", blank=True)
 
     # def __str__(self) :
     #     return f"Document name: {self.name}, owner:  {self.owner}"

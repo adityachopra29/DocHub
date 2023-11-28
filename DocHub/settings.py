@@ -52,7 +52,6 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -87,26 +86,6 @@ REST_FRAMEWORK = {
     ]
 }
 # SECRET_KEY = os.getenv('SESSION_SECRET_KEY')
-
-
-# AUTHENTICATION_BACKENDS = [
-
-#     'allauth.account.auth_backends.AuthenticationBackend',
-
-# ]
-
-# settings.py
-
-# SOCIALACCOUNT_PROVIDERS = {
-#     'oauth2': {
-#         'SITE_URL': 'your_site_url',
-#         'SCOPE': ['email'],
-#         'AUTH_PARAMS': {'access_type': 'online'},
-#         'METHOD': 'oauth2',
-#         # other provider-specific settings
-#     },
-# }
-
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -167,11 +146,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_CREDENTIALS = True
-
-CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:5173',
-    'http://127.0.0.1:5173',
-]
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
