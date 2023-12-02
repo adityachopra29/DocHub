@@ -89,12 +89,12 @@ class CallbackAPI(APIView):
             print("User already exists, so logging in the user")
             user = User.objects.get(enrollment_no=enrollment_no)
             try:
-                login(request =request, user=user)
+                login(request=request, user=user)
                 print("Successful login for ")
                 print(request.user)
                 return redirect("http://localhost:5173/home")
-            except:
-                return Response("unable to login")
+            except Exception as e:
+                return Response("unable to login", e)
         else:
             print("User does not exist hence now adding user")
 
@@ -103,12 +103,11 @@ class CallbackAPI(APIView):
             print(user)
             try:
                 login(request, user)
-                print("Successful login for ")
-                print(request.user)
+                print("Successful login for ", request.user)
                 users = User.objects.all()
                 print(users)
                 print(data)
-                return redirect("http://localhost:5173/home")
+                return redirect("http://localhost:5173/home", user)
             except:
                 return Response("unable to log in")
 

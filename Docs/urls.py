@@ -9,7 +9,7 @@ router.register(r'document', DocumentViewSet, basename="document")
 
 urlpatterns = [
     path("", include(router.urls)),
-    path("auth/oauth", RequestAccessAPI.as_view(), name='login'),
+    path("auth/oauth/", RequestAccessAPI.as_view(), name='login'),
     path("home/", CallbackAPI.as_view(), name='home'),
     path("testing/", CheckView.as_view(), name='test'),
     path("logout/", LogoutUser.as_view(), name='logout_user'),

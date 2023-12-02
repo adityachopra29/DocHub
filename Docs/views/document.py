@@ -35,13 +35,29 @@ class DocumentViewSet(viewsets.ModelViewSet):
         print("This is retreive")
         user = request.user
         id = kwargs.get('pk')
-        doc = Document.objects.get(id = id)
-        serializer = serializers.DocumentSerializer(doc)
-        # print(doc.owner)
-        # print(user)
-        if doc.owner != user:
-            return Response("No access")
-        else:
-            print(doc)
+        try:
+            doc = Document.objects.get(id = id)
             serializer = serializers.DocumentSerializer(doc)
-            return Response(serializer.data)
+            # print(doc.owner)
+            # print(user)
+            if doc.owner != user:
+                return Response("No access")
+            else:
+                print(doc)
+                serializer = serializers.DocumentSerializer(doc)
+                return Response(serializer.data)
+        except:
+            return Response("The doc doesnt exist")
+           
+    def destroy(self, request, *args, **kwargs):
+        print("we deleting the document")
+        user = request.user
+        id = kwargs.get('pk')
+        document = Document.objects.get(id = id)
+        if document.owner != user:
+            return Response("No access to delete")
+        document.delete()
+        try:
+            return Response("Successfully deleted document")
+        except: 
+            return Response("Error aagaya guys")

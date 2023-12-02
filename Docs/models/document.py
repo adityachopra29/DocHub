@@ -5,7 +5,7 @@ from .user import User
 class Document(models.Model):
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=40)
-    delta = models.JSONField(default=dict)
+    delta = models.JSONField(default=dict, null=True)
     text = models.TextField(default="", blank=True)
 
     # def __str__(self) :
