@@ -10,9 +10,10 @@ class DocumentSerializer(serializers.ModelSerializer):
         fields = '__all__'
     
     def create(self, validated_data):
-        # validated_data is the deserializd data
+        # validated_data is the deserialized data
         print("we creating a document")
         user = self.context['request'].user
+        data = self.context['request'].data
         validated_data["owner"] = user
         instance = Document.objects.create(**validated_data)
         return instance

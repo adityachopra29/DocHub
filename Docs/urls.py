@@ -5,6 +5,7 @@ from Docs.views import *
 router = routers.SimpleRouter()
 router.register(r'users', UserViewSet, basename="users")
 router.register(r'document', DocumentViewSet, basename="document")
+router.register(r'user_access_permissions', UserPermissionViewSet, basename="user_access_permissions")
 
 
 urlpatterns = [

@@ -8,5 +8,3 @@ class Document(models.Model):
     delta = models.JSONField(default=dict, null=True)
     text = models.TextField(default="", blank=True)
 
-    # def __str__(self) :
-    #     return f"Document name: {self.name}, owner:  {self.owner}"
