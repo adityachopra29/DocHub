@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from Docs.models.document import Document
 from Docs.models.user import User
-from rest_framework import authentication, permissions, parsers
+from rest_framework import authentication, permissions, parsers, status
 from Docs import serializers
 from Docs.models.access_permissions import UserAccess
 from rest_framework.response import Response
@@ -18,19 +18,44 @@ class DocumentViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
         
-    def list(self, request):
-        # need to see from perission database that user has the permission to access the doc
-        try:
-            print("we in document list mode")
-            user = request.user  #here the user is the session authentication wala abstract user
-            doc_list = Document.objects.filter(owner = user)
-            serializer = serializers.DocumentSerializer(doc_list, many = True)
-            # print(doc_list)
-            return Response(serializer.data)
+    # def list(self, request):
+    #     # need to see from perission database that user has the permission to access the doc
+    #     try:
+    #         print("we in document list mode")
+    #         user = request.user  #here the user is the session authentication wala abstract user
+    #         doc_list = Document.objects.filter(owner = user)
+    #         serializer = serializers.DocumentSerializer(doc_list, many = True)
+    #         # print(doc_list)
+    #         return Response(serializer.data)
             
-        except Exception as error:
-            print(error)
-            return Response("Error in list view")
+    #     except Exception as error:
+    #         print(error)
+    #         return Response("Error in list view")
+    def list(self, request):
+        pass
+
+    def partial_update(self, request, *args, **kwargs):
+        print("this is edit")
+        user = request.user
+        id = kwargs.get('pk')
+        document = Document.objects.get(id = id)
+        try:
+            permissions = UserAccess.objects.get(document = document, for_user = user)
+            if permissions.permission_level >= 3:
+                # user has the permissions
+                print("permission there")
+                data = request.data    
+                serializer = serializers.DocumentSerializer(instance=document, data=request.data)      
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data)
+                else:
+                    return Response(serializer.error_messages) 
+            else:
+                return Response(status=status.HTTP_403_FORBIDDEN)     
+        except UserAccess.DoesNotExist:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
 
     def retrieve(self, request, *args, **kwargs):
         print("This is retreive")
@@ -42,7 +67,8 @@ class DocumentViewSet(viewsets.ModelViewSet):
             serializer = serializers.DocumentSerializer(doc)
             # print(doc.owner)
             # print(user)
-            if doc.owner != user:
+            permissions = UserAccess.objects.get(document = doc, for_user = user)
+            if not permissions:
                 return Response("No access")
             else:
                 print(doc)
@@ -83,13 +109,77 @@ class DocumentViewSet(viewsets.ModelViewSet):
         print("document created: ", document_serializer.data)
         UserAccess.objects.create(
             document = document,
-            for_user =user,
+            for_user = user,
             permission_level = 4
         )
         print("gave delete access to the user(owner): ", user)
 
 
         print(request.data)
+
+        # for delete
+        try:
+            delete_permissions_list = request.data['delete_permissions']
+            for entry in delete_permissions_list:
+                if(entry == ''):
+                    # print("blanck aagaya so continuing")
+                    continue
+                try:
+                    for_user = User.objects.get(tag = entry)
+                    UserAccess.objects.create(
+                        document = document,
+                        for_user =for_user,
+                        permission_level = 4
+                    )
+                    print("Created delete access for user", entry)
+                except Exception as e:
+                    print("Failed to add delete access for user with tag: ", entry)
+
+        except Exception as e:
+            print("delete permission error: " , e) 
+
+        # for write
+        try:
+            write_permissions_list = request.data['write_permissions']
+            for entry in write_permissions_list:
+                if(entry == ''):
+                    # print("blanck aagaya so continuing")
+                    continue
+                try:
+                    for_user = User.objects.get(tag = entry)
+                    UserAccess.objects.create(
+                        document = document,
+                        for_user =for_user,
+                        permission_level = 3
+                    )
+                    print("Created write access for user", entry)
+                except Exception as e:
+                    print("Failed to add write access for user with tag: ", entry)
+        except Exception as e:
+            print("write permission error: " , e)
+
+        
+        # for comment
+        try:
+            comment_permissions_list = request.data['comment_permissions']
+            
+            for entry in comment_permissions_list:
+                if(entry == ''):
+                    # print("blanck aagaya so continuing")
+                    continue
+                try:
+                    for_user = User.objects.get(tag = entry)
+                    UserAccess.objects.create(
+                        document = document,
+                        for_user =for_user,
+                        permission_level = 2
+                    )
+                    print("Created comment access for user", entry)
+                except Exception as e:
+                    print("Failed to add comment access for user with tag: ", entry)
+        except Exception as e:
+            print("comment permission error: " , e)
+        
 
         # for read
         try:
@@ -111,68 +201,6 @@ class DocumentViewSet(viewsets.ModelViewSet):
         except Exception as e:
             print("read permission error: " , e)
 
-
-        # for comment
-        try:
-            comment_permissions_list = request.data['comment_permissions']
-            
-            for entry in comment_permissions_list:
-                if(entry == ''):
-                    # print("blanck aagaya so continuing")
-                    continue
-                try:
-                    for_user = User.objects.get(tag = entry)
-                    UserAccess.objects.create(
-                        document = document,
-                        for_user =for_user,
-                        permission_level = 2
-                    )
-                    print("Created comment access for user", entry)
-                except Exception as e:
-                    print("Failed to add comment access for user with tag: ", entry)
-        except Exception as e:
-            print("comment permission error: " , e)
-
-        # for comment
-        try:
-            write_permissions_list = request.data['write_permissions']
-            for entry in write_permissions_list:
-                if(entry == ''):
-                    # print("blanck aagaya so continuing")
-                    continue
-                try:
-                    for_user = User.objects.get(tag = entry)
-                    UserAccess.objects.create(
-                        document = document,
-                        for_user =for_user,
-                        permission_level = 3
-                    )
-                    print("Created write access for user", entry)
-                except Exception as e:
-                    print("Failed to add write access for user with tag: ", entry)
-        except Exception as e:
-            print("write permission error: " , e)
-
-        # for delete
-        try:
-            delete_permissions_list = request.data['delete_permissions']
-            for entry in delete_permissions_list:
-                if(entry == ''):
-                    # print("blanck aagaya so continuing")
-                    continue
-                try:
-                    for_user = User.objects.get(tag = entry)
-                    UserAccess.objects.create(
-                        document = document,
-                        for_user =for_user,
-                        permission_level = 4
-                    )
-                    print("Created delete access for user", entry)
-                except Exception as e:
-                    print("Failed to add delete access for user with tag: ", entry)
-        except Exception as e:
-            print("delete permission error: " , e) 
-    
-        return Response("Created the document and assigned all the permissions")
+        return Response(document_serializer.data)
         
         

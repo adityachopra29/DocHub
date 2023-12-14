@@ -14,6 +14,8 @@ class UserAccess(models.Model):
             MinValueValidator(1)
         ]
     )
+    class Meta:
+        unique_together =  ('for_user', 'document')
 
 class TeamAccess(models.Model):
     document = models.ForeignKey(Document, on_delete=models.CASCADE)

@@ -23,7 +23,6 @@ class UserPermissionViewSet(viewsets.ModelViewSet):
         print("we in retreive mode")
         user = request.user
         print(user)
-        # try:
         docs_with_permissions_list  = access_permissions.UserAccess.objects.filter(for_user = user)
         response_list = []
         for entry in docs_with_permissions_list:
@@ -34,8 +33,8 @@ class UserPermissionViewSet(viewsets.ModelViewSet):
                 is_personal = False
             else:
                 is_personal = True
-            permission_level = entry.permission_level
-            response_list.append([doc_serializer.data, permission_level, is_personal])
+            # permission_level = entry.permission_level
+            response_list.append([doc_serializer.data, is_personal])
         print(response_list)
         return Response(response_list)
 

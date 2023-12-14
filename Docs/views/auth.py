@@ -92,7 +92,7 @@ class CallbackAPI(APIView):
                 login(request=request, user=user)
                 print("Successful login for ")
                 print(request.user)
-                return redirect("http://localhost:5173/home")
+                return redirect("http://localhost:5173/document")
             except Exception as e:
                 return Response("unable to login", e)
         else:
@@ -107,7 +107,7 @@ class CallbackAPI(APIView):
                 users = User.objects.all()
                 print(users)
                 print(data)
-                return redirect("http://localhost:5173/home", user)
+                return redirect("http://localhost:5173/document", user)
             except:
                 return Response("unable to log in")
 
